@@ -2,6 +2,7 @@ import cv2
 import os
 import time
 import shutil
+import conf
 
 
 def getAllPath(dirpath, *suffix):
@@ -19,7 +20,8 @@ def readPicSaveFace(sourcePath, targetPath, invalidPath, *suffix):
     imagePaths = getAllPath(sourcePath, *suffix)
     try:
         count = 1
-        face_cascade = cv2.CascadeClassifier('F:\\github\\opencv\\sources\\data\\haarcascades\\haarcascade_frontalface_alt.xml')
+        face_cascade = cv2.CascadeClassifier(
+            'F:\\github\\opencv\\sources\\data\\haarcascades\\haarcascade_frontalface_alt.xml')
         for imagePath in imagePaths:
             img = cv2.imread(imagePath)
             if type(img) != str:
@@ -47,7 +49,5 @@ def readPicSaveFace(sourcePath, targetPath, invalidPath, *suffix):
 
 
 if __name__ == '__main__':
-    invalidPath = 'F:\\work\\muri\\haveNoPeaple'
-    sourcePath = 'F:\\work\\muri\\cover'
-    targetPath = 'F:\\work\\muri\\faceOfPeaple'
-    readPicSaveFace(sourcePath, targetPath, invalidPath, '.jpg', '.JPG', 'png', 'PNG')
+    invalidPath = conf.muri_path+'haveNoPeaple'
+    readPicSaveFace(conf.cover_path, conf.save_path, invalidPath, '.jpg', '.JPG', 'png', 'PNG')
