@@ -24,7 +24,8 @@ def readPicSaveFace(sourcePath, targetPath, invalidPath, *suffix):
     try:
         count = 1
         face_cascade = cv2.CascadeClassifier()
-        a =face_cascade.load('F:\github\opencv\data\haarcascades\haarcascade_frontalface_alt.xml')
+        # a =face_cascade.load('F:\github\opencv\data\haarcascades\haarcascade_frontalface_alt.xml')
+        a =face_cascade.load('E:\github\opencv-master\data\haarcascades\haarcascade_frontalface_alt.xml')
         print(a)
         for imagePath in imagePaths:
             img = cv2.imread(imagePath)
