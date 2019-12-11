@@ -4,33 +4,36 @@ import time
 import shutil
 import conf
 
-
+# print(sys.argv[0])
 def getAllPath(dirpath, *suffix):
     PathArray = []
+    FileNames = []
     for r, ds, fs in os.walk(dirpath):
         for fn in fs:
             if os.path.splitext(fn)[1] in suffix:
-                fname = os.path.join(r, fn)
-                print(fname)
+                print(r,fn)
+                fname = r+"/"+fn
                 PathArray.append(fname)
-    return PathArray
+                FileNames.append(fn)
+    return PathArray,FileNames
 
 
 def readPicSaveFace(sourcePath, targetPath, invalidPath, *suffix):
-    imagePaths = getAllPath(sourcePath, *suffix)
+    imagePaths,fileNames = getAllPath(sourcePath, *suffix)
+    print(imagePaths)
     try:
         count = 1
-        face_cascade = cv2.CascadeClassifier(
-            'F:\\github\\opencv\\sources\\data\\haarcascades\\haarcascade_frontalface_alt.xml')
+        face_cascade = cv2.CascadeClassifier()
+        a =face_cascade.load('F:\github\opencv\data\haarcascades\haarcascade_frontalface_alt.xml')
+        print(a)
         for imagePath in imagePaths:
             img = cv2.imread(imagePath)
             if type(img) != str:
                 faces = face_cascade.detectMultiScale(img, 1.1, 5)
                 if len(faces):
                     for (x, y, w, h) in faces:
-                        if w >= 128 and h >= 128:
-                            listStr = [str(int(time.time())), str(count)]
-                            fileName = ''.join(listStr)
+                        if w >= 64 and h >= 64:
+                            fileName =os.path.splitext(fileNames[imagePaths.index(imagePath)])[0]
                             X = int(x * 0.5)
                             W = min(int((x + w) * 1.2), img.shape[1])
                             Y = int(y * 0.3)
@@ -40,6 +43,7 @@ def readPicSaveFace(sourcePath, targetPath, invalidPath, *suffix):
                             count += 1
                             print(imagePath + "have face")
                 else:
+                    print(imagePath + "not found face")
                     shutil.move(imagePath, invalidPath)
     except IOError:
         print("Error")
@@ -49,5 +53,5 @@ def readPicSaveFace(sourcePath, targetPath, invalidPath, *suffix):
 
 
 if __name__ == '__main__':
-    invalidPath = conf.muri_path+'haveNoPeaple'
+    invalidPath = conf.muri_path+'findno'
     readPicSaveFace(conf.cover_path, conf.save_path, invalidPath, '.jpg', '.JPG', 'png', 'PNG')
