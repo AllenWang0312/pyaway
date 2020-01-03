@@ -136,7 +136,6 @@ def minibatches(inputs=None, targets=None, batch_size=None, shuffle=False):
             excerpt = slice(start_idx, start_idx + batch_size)
         yield inputs[excerpt], targets[excerpt]
 
-
 # 训练和测试数据，可将n_epoch设置更大一些
 saver = tf.train.Saver(max_to_keep=3)
 max_acc = 0
