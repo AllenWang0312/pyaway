@@ -21,8 +21,8 @@ disk_path = cp.get("workspace", "disk_path")
 opencv_path = cp.get("workspace", "opencv_path")
 
 # muri_path = disk_path+"/aboutu/uu"
-cover_path = disk_path + "/photos/meituri_cn/0/19013"
-save_path = disk_path + "/photos/meituri_cn/0/19013_portrait"
+cover_path = disk_path + "/photos/meituri_cn/101"
+save_path = disk_path + "/photos/meituri_cn/101_portrait"
 
 
 # invalidPath = disk_path + '/photos/meituri_cn/0/19013_findno'
@@ -49,27 +49,28 @@ def readPicSaveFace(sourcePath, targetPath, *suffix):
         face_cascade = cv2.CascadeClassifier()
         # a =face_cascade.load('F:/github/opencv/data/haarcascades/haarcascade_frontalface_alt.xml')
         a = face_cascade.load(
-            opencv_path + '/opencv/data/haarcascades/haarcascade_frontalface_default.xml'
-            # opencv_path + '/opencv/data/haarcascades/haarcascade_frontalface_alt2.xml'
+            # opencv_path + '/opencv/data/haarcascades/haarcascade_frontalface_default.xml'//haarcascade_frontalface_alt2
+            opencv_path + '/opencv/data/haarcascades/haarcascade_frontalface_alt2.xml'
             # opencv_path + '/opencv/data/haarcascades/haarcascade_eye.xml'
         )
         print(a)
         for imagePath in imagePaths:
             img = cv2.imread(imagePath)
             if type(img) != str:
-                faces = face_cascade.detectMultiScale(img, 1.15, 5)
+                faces = face_cascade.detectMultiScale(img, 1.5, 5, minSize=(64, 64), maxSize=(1024, 1024))
                 if len(faces):
                     for (x, y, w, h) in faces:
                         if w >= 64 and h >= 64:
                             fileName = os.path.splitext(
                                 fileNames[imagePaths.index(imagePath)])[0]
-                            X = int(x * 0.5)
-                            W = min(int((x + w) * 1.2), img.shape[1])
-                            Y = int(y * 0.3)
-                            H = min(int((y + h) * 1.4), img.shape[0])
-                            f = cv2.resize(img[Y:H, X:W], (W - X, H - Y))
+                            # X = int(x * 0.5)
+                            # W = min(int((x + w) * 1.2), img.shape[1])
+                            # Y = int(y * 0.3)
+                            # H = min(int((y + h) * 1.4), img.shape[0])
+                            # f = cv2.resize(img[Y:H, X:W], (W - X, H - Y))
+                            f = cv2.resize(img[y:y+h, x:x+w], ( w, h))
                             cv2.imwrite(targetPath + os.sep +
-                                        '%s.jpg' % fileName, f)
+                                        '%s.jpg' % count, f)
                             count += 1
                             print(imagePath + "have face")
                 else:
@@ -87,6 +88,6 @@ if __name__ == '__main__':
     #     print("dir exist:"+save_path)
     # else:
     #     os.mkdir(save_path, 777)
-
+    #     getAllPath(cover_path, '.jpg', '.JPG', '.png', '.PNG')
     readPicSaveFace(cover_path, save_path,
                     '.jpg', '.JPG', '.png', '.PNG')
