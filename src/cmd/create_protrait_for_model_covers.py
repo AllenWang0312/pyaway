@@ -7,7 +7,7 @@ from configparser import ConfigParser
 # print(sys.argv[0])
 
 proDir = os.path.split(os.path.realpath(__file__))[0]
-# proDir = os.path.dirname(os.path.realpath(__file__))  与上面一行代码作用一样
+# proDir = os.path.dirname(os.path.realpath(__file__)) 
 print(proDir)
 configPath = os.path.join(proDir, "../../conf/config.ini")
 path = os.path.abspath(configPath)
@@ -21,8 +21,8 @@ disk_path = cp.get("workspace", "disk_path")
 opencv_path = cp.get("workspace", "opencv_path")
 
 # muri_path = disk_path+"/aboutu/uu"
-cover_path = disk_path + "/photos/meituri_cn/101"
-save_path = disk_path + "/photos/meituri_cn/101_portrait"
+cover_path = disk_path + "/photos/meituri/107"
+save_path =  "../../assets/portrait/107"
 
 
 # invalidPath = disk_path + '/photos/meituri_cn/0/19013_findno'
@@ -49,9 +49,9 @@ def readPicSaveFace(sourcePath, targetPath, *suffix):
         face_cascade = cv2.CascadeClassifier()
         # a =face_cascade.load('F:/github/opencv/data/haarcascades/haarcascade_frontalface_alt.xml')
         a = face_cascade.load(
-            # opencv_path + '/opencv/data/haarcascades/haarcascade_frontalface_default.xml'//haarcascade_frontalface_alt2
-            opencv_path + '/opencv/data/haarcascades/haarcascade_frontalface_alt2.xml'
-            # opencv_path + '/opencv/data/haarcascades/haarcascade_eye.xml'
+            # opencv_path + '/data/haarcascades/haarcascade_frontalface_default.xml'//haarcascade_frontalface_alt2
+            opencv_path + '/data/haarcascades/haarcascade_frontalface_alt2.xml'
+            # opencv_path + '/data/haarcascades/haarcascade_eye.xml'
         )
         print(a)
         for imagePath in imagePaths:
@@ -84,10 +84,10 @@ def readPicSaveFace(sourcePath, targetPath, *suffix):
 
 
 if __name__ == '__main__':
-    # if os._exists(save_path):
-    #     print("dir exist:"+save_path)
-    # else:
-    #     os.mkdir(save_path, 777)
+    if os._exists(save_path):
+        print("dir exist:"+save_path)
+    else:
+        os.mkdir(save_path, 777)
     #     getAllPath(cover_path, '.jpg', '.JPG', '.png', '.PNG')
     readPicSaveFace(cover_path, save_path,
                     '.jpg', '.JPG', '.png', '.PNG')
